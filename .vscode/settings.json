@@ -1,0 +1,12 @@
+{
+  "java.project.sourcePaths": [
+    "src/main/java",
+    "src/main/eprogs"
+  ],
+  // Hide noisy exercise folders from the explorer AND language server
+  "files.exclude": {
+    "**/src/main/eprogs/applications/**": true
+  },
+  // Optional: reduce warning spam
+  "java.compile.nullAnalysis.mode": "disabled"
+}

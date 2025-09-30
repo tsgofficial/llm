@@ -1,3 +1,4 @@
+package dataStructures;
 import dataStructures.ArrayLinearList;
 import java.util.Scanner;
 

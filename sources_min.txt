@@ -1,5 +1,0 @@
-src\main\eprogs\dataStructures\LinearList.java
-src\main\eprogs\dataStructures\ArrayLinearListIterator.java
-src\main\eprogs\dataStructures\ArrayLinearList.java
-src\main\eprogs\utilities\ChangeArrayLength.java
-src\main\java\MyArrayLinearList.java

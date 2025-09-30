@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compile MyChain only",
+      "type": "shell",
+      "command": "mkdir out -Force; javac -d out -sourcepath \"src/main/eprogs;src/main/java\" src/main/java/dataStructures/MyChain.java",
+      "problemMatcher": "$javac"
+    },
+    {
+      "label": "Run MyChain",
+      "type": "shell",
+      "command": "java -cp out dataStructures.MyChain"
+    }
+  ]
+}
