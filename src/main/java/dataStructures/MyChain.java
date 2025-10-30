@@ -22,6 +22,9 @@ public class MyChain extends Chain {
         if (tail != null) while (tail.next != null) tail = tail.next;
 
         for (final Object e : elements) {
+
+            if (e == null) throw new IllegalArgumentException("null elements are not allowed");
+
             final ChainNode node = new ChainNode(e, null);
             if (firstNode == null) { firstNode = node; tail = node; }
             else { tail.next = node; tail = node; }
@@ -58,12 +61,12 @@ public class MyChain extends Chain {
             c = c.next;
         }
         return res;
-    }
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 
     private boolean containsElement(final Object e) {
         ChainNode cur = firstNode;
         while (cur != null) {
-            if (e == null ? cur.element == null : e.equals(cur.element)) return true;
+            if (e.equals(cur.element)) return true;
             cur = cur.next;
         }
         return false;
