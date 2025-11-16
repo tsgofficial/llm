@@ -63,6 +63,22 @@ mkdir out -Force | Out-Null
 javac -d out -sourcepath "src\main\eprogs;src\main\java" "src\main\java\dataStructures\MyStack.java" 
 java -cp out dataStructures.MyStack
 
+# run 4
+mkdir out -Force | Out-Null
+javac -d out -sourcepath "src\main\eprogs;src\main\java" "src\main\java\dataStructures\MyHashChains.java"
+java -cp out dataStructures.MyHashChains
+
+# run 5
+mkdir out -Force | Out-Null
+javac -d out -sourcepath "src\main\eprogs;src\main\java" "src\main\java\dataStructures\Expression.java"
+java -cp out dataStructures.Expression
+
+# values 5
+1,2,3,4
+rule: 
+Prefix-ийн дүрэм: operator  leftSubtree  rightSubtree
+Postfix-ийн дүрэм: operand operand operator
+
 # Biydaalt 1
 cmd /c "javac -d out -sourcepath src\main\eprogs;src\main\java src\main\eprogs\dataStructures\LinearList.java src\main\eprogs\dataStructures\ArrayLinearListIterator.java src\main\eprogs\dataStructures\ChainNode.java src\main\eprogs\dataStructures\ArrayLinearList.java src\main\eprogs\dataStructures\Chain.java src\main\eprogs\utilities\ChangeArrayLength.java src\main\java\dataStructures\biyDaalt.java && java -cp out dataStructures.biyDaalt data\Subjects.txt data\Professions.txt data\Exams.txt"
 
@@ -78,3 +94,8 @@ javac -d out -sourcepath "src\main\java;src\main\eprogs" `
   src\main\java\dataStructures\CarParking.java
 
 java -cp out dataStructures.CarParking "src\main\data\cars.txt"
+
+# Biydaalt 3
+mkdir out -Force | Out-Null
+javac -d out -sourcepath "src\main\eprogs;src\main\java" "src\main\java\dataStructures\GraphDijkstra.java"
+java -cp out dataStructures.GraphDijkstra
