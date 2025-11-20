@@ -108,7 +108,7 @@ public class Expression extends LinkedBinaryTree {
         root = buildFromInfix(tokens, idx);
     }
 
-    // бүрэн хаалттай инфикс гэж үзнэ: ( left op right )
+    // gyo
     private BinaryTreeNode buildFromInfix(String[] tokens, int[] idx) {
         String tok = tokens[idx[0]++];
 
@@ -129,10 +129,6 @@ public class Expression extends LinkedBinaryTree {
         }
     }
 
-    /* =========================
-       4. Хэвлэлүүд
-       ========================= */
-
     // (хаалттай) INFIX хэлбэрээр хэвлэх
     public void printInfix() {
         printInfix(root);
@@ -142,7 +138,7 @@ public class Expression extends LinkedBinaryTree {
     private void printInfix(BinaryTreeNode t) {
         if (t == null) return;
 
-        // навч бол шууд хэвлэнэ
+        
         if (t.leftChild == null && t.rightChild == null) {
             System.out.print(t.element);
             return;
@@ -186,12 +182,17 @@ public class Expression extends LinkedBinaryTree {
        5. Модыг ашиглаж илэрхийллийг бодох
        ========================= */
 
+    // Хуучин хувилбар — ганцаараа дуудахад хэрэглэж болно
     public int evaluate() {
         Scanner in = new Scanner(System.in);
         Map<String, Integer> vars = new HashMap<>();
-        int result = eval(root, in, vars);
-        // in-ийг хааж болно, гэхдээ ихэвчлэн main гарна гэж үзье
-        return result;
+        return eval(root, in, vars);
+    }
+
+    // ШИНЭ хувилбар — гаднаас Scanner, vars авч ажиллана
+    // Ингэснээр олон Expression хооронд хувьсагчийн утгаа share хийнэ
+    public int evaluate(Scanner in, Map<String, Integer> vars) {
+        return eval(root, in, vars);
     }
 
     // рекурсив үнэлгээ
@@ -215,64 +216,75 @@ public class Expression extends LinkedBinaryTree {
         }
 
         // operand → тоо эсвэл хувьсагч
-        // 1) integer literal эсэхийг шалгана
         try {
+            // тоон literal байвал шууд parse
             return Integer.parseInt(val);
         } catch (NumberFormatException e) {
-            // 2) хувьсагч гэж үзээд хэрэглэгчээс асууна
+            // хувьсагч бол map-с хайна, байхгүй бол асууна
             if (vars.containsKey(val)) {
                 return vars.get(val);
             }
-            System.out.print("tomyond baigaa " + val + " huwisagciin utgiig oruulna uu: ");
+            System.out.print("tomyoond baigaa " + val + " huvisagchiin utgiig oruulna uu: ");
             int x = in.nextInt();
             vars.put(val, x);
             return x;
         }
     }
 
-    /* =========================
-       6. Жижиг DEМО main
-       ========================= */
-
     public static void main(String[] args) {
-        Expression e = new Expression();
+        // (a + b) * (c - d) илэрхийллийн 3 хэлбэр
+        String postfixExpr = "a b + c d - *";
+        String prefixExpr  = "* + a b - c d";
+        String infixExpr   = "( ( a + b ) * ( c - d ) )";
 
-        // Жишээ: postfix-ээс мод үүсгэе
-        // (a + b) * (c - d) гэсэн илэрхийллийн postfix хэлбэр:
-        // a b + c d - *
-        e.buildFromPostfix("a b + c d - *");
+        // 1) Постфиксоос мод үүсгэх
+        Expression ePost = new Expression();
+        ePost.buildFromPostfix(postfixExpr);
 
-        System.out.print("Infix  : ");
-        e.printInfix();      // ((a + b) * (c - d))
+        // 2) Префиксоос мод үүсгэх
+        Expression ePre = new Expression();
+        ePre.buildFromPrefix(prefixExpr);
 
-        System.out.print("Prefix : ");
-        e.printPrefix();     // * + a b - c d
+        // 3) Инфиксоос (бүрэн хаалттай) мод үүсгэх
+        Expression eInf = new Expression();
+        eInf.buildFromInfix(infixExpr);
 
-        System.out.print("Postfix: ");
-        e.printPostfix();    // a b + c d - *
+        System.out.println("=== ILERHIILELIIN 3 helber ===");
+        System.out.print("Postfix ilerhiilel: ");
+        System.out.println(postfixExpr);
+        System.out.print("Prefix  ilerhiilel: ");
+        System.out.println(prefixExpr);
+        System.out.print("Infix   ilerhiilel: ");
+        System.out.println(infixExpr);
 
-        int result = e.evaluate();
-        System.out.println("Result = " + result);
+        // --------------------------
+        // Odoo bodoh kheseg
+        // --------------------------
+        Scanner in = new Scanner(System.in);
+        Map<String, Integer> sharedVars = new HashMap<>();
 
-        // Жишээ: prefix-ээс мод үүсгэх
-        Expression e2 = new Expression();
-        e2.buildFromPrefix("* + a b - c d");
+        System.out.println();
+        System.out.println("=== a, b, c, d (huvisagchdiin utgiig neg udaа oruulna) ===");
 
-        System.out.print("\n[e2] Infix  : ");
-        e2.printInfix();
-        System.out.print("[e2] Prefix : ");
-        e2.printPrefix();
-        System.out.print("[e2] Postfix: ");
-        e2.printPostfix();
+        // ehleed postfix huvilbaryg bodood a,b,c,d asuuj avna
+        int vPost = ePost.evaluate(in, sharedVars);
 
-        // Жишээ: fully parenthesized infix-ээс
-        Expression e3 = new Expression();
-        e3.buildFromInfix("( ( a + b ) * ( c - d ) )");
-        System.out.print("\n[e3] Infix  : ");
-        e3.printInfix();
-        System.out.print("[e3] Prefix : ");
-        e3.printPrefix();
-        System.out.print("[e3] Postfix: ");
-        e3.printPostfix();
+        // daraagii 2 ni map-soo utgaa shuud avna, dahin asuuhgui
+        int vPre  = ePre.evaluate(in, sharedVars);
+        int vInf  = eInf.evaluate(in, sharedVars);
+
+        System.out.println();
+        System.out.println("=== UR DUNGUUD ===");
+        System.out.println("Postfix result = " + vPost);
+        System.out.println("Prefix result = " + vPre);
+        System.out.println("Infix result = " + vInf);
+
+        System.out.println();
+        System.out.println("=== TEST ===");
+        if (vPost == vPre && vPre == vInf) {
+            System.out.println("3 uun helber ni hariu adil tul zuw baina");
+        } else {
+            System.out.println("3 helberiin ali neg ni buruu baina. Tomyoonuudiig haritsuulaar daxin shalga.");
+        }
     }
 }
